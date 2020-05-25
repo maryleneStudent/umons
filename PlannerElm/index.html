@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Inserted by Reload -->
+    <script src="/reload/reload.js"></script>
+    <!-- End Reload -->
+
+    <meta charset="UTF-8" />
+    <title>Main</title>
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+    <script type="text/javascript" src="elm.js"></script>
+  </head>
+
+  <body>
+    <div id="myapp"></div>
+
+    <script type="text/javascript">
+      // Start the Elm application.
+      var app = Elm.Main.init({
+        node: document.getElementById("myapp"),
+        flags: {
+          storedToken: localStorage.getItem("__DISTINCTLY_TOKEN__"),
+          storedUser: JSON.parse(localStorage.getItem("__DISTINCTLY_USER__")),
+          storedIsAdmin:
+            localStorage.getItem("__DISTINCTLY_IS_ADMIN__") === "true",
+        },
+      });
+      app.ports.setStorage.subscribe(function (token) {
+        localStorage.setItem("__DISTINCTLY_TOKEN__", token);
+      });
+      app.ports.removeStorage.subscribe(function (token) {
+        localStorage.removeItem("__DISTINCTLY_TOKEN__");
+      });
+      app.ports.setUserInLocalStorage.subscribe(function (user) {
+        localStorage.setItem("__DISTINCTLY_USER__", JSON.stringify(user));
+      });
+      app.ports.removeUserFromLocalStorage.subscribe(function () {
+        localStorage.removeItem("__DISTINCTLY_USER__");
+      });
+      app.ports.setIsAdminInLocalStorage.subscribe(function (isAdmin) {
+        localStorage.setItem("__DISTINCTLY_IS_ADMIN__", isAdmin);
+      });
+      app.ports.removeUserFromLocalStorage.subscribe(function () {
+        localStorage.removeItem("__DISTINCTLY_IS_ADMIN__");
+      });
+    </script>
+  </body>
+</html>
