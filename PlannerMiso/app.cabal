@@ -1,0 +1,16 @@
+name:                PlannerMiso
+version:             0.1.0.0
+synopsis:            Miso Planner app
+category:            Web
+build-type:          Simple
+cabal-version:       >=1.10
+
+executable app
+  main-is:             Main.hs
+  ghcjs-options:
+    -dedupe
+  cpp-options:
+    -DGHCJS_BROWSER
+  build-depends:       base < 5, miso, jsaddle, jsaddle-warp, servant, aeson, containers, ghcjs-base, network-uri, utf8-string, bytestring, lucid, transformers
+  other-modules:       Action, Effect, Home, ListPlanners, Model, Routing, Update, View, ViewPlanner, Html
+  default-language:    Haskell2010
