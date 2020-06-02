@@ -4,6 +4,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import umons.edu.Scheduler.models.ApplicationUser;
@@ -25,6 +26,9 @@ public class PlannerRunner implements CommandLineRunner {
 	
 	@Autowired
 	private AppointmentRepository appRepo;
+	
+	@Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	// Min appointment hour
 	private static final int MIN_HOUR = 8;
@@ -43,6 +47,7 @@ public class PlannerRunner implements CommandLineRunner {
 	@Override
 	public void run(String... strings) throws Exception {
 		repository.deleteAll();
+		userRepo.deleteAll();
 		appRepo.deleteAll();
 		if (userRepo.findByUsername(ADMIN) == null) {
 			ApplicationUser admin = new ApplicationUser();
@@ -51,7 +56,7 @@ public class PlannerRunner implements CommandLineRunner {
 			person.setLastname("Maboule");
 			admin.setPerson(person);
 			admin.setUsername(ADMIN);
-			admin.setPassword("nimda");
+			admin.setPassword(bCryptPasswordEncoder.encode("nimda"));
 			userRepo.save(admin);
 		}
 		if (userRepo.findByUsername("mStudent") == null) {
@@ -61,7 +66,7 @@ public class PlannerRunner implements CommandLineRunner {
 			info.setFirstname("Marylene");
 			user.setPerson(info);
 			user.setUsername("mStudent");
-			user.setPassword("123");
+			user.setPassword(bCryptPasswordEncoder.encode("123"));
 			userRepo.save(user);
 		}
 		ApplicationUser admin = userRepo.findByUsername(ADMIN);
